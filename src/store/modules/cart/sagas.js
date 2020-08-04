@@ -28,7 +28,6 @@ function* addToCart({ id }) {
     yield put(updateAmountSuccess(id, amount));
   } else {
     const response = yield call(api.get, `/products/${id}`);
-
     const data = {
       ...response.data,
       amount: 1,
@@ -45,6 +44,7 @@ function* updateAmount({ id, amount }) {
   if (amount <= 0) return;
 
   const stock = yield call(api.get, `stock/${id}`);
+
   const stockAmount = stock.data.amount;
 
   if (amount > stockAmount) {
@@ -57,5 +57,5 @@ function* updateAmount({ id, amount }) {
 
 export default all([
   takeLatest('@cart/ADD_REQUEST', addToCart),
-  takeLatest('@cart/UPDATE_AMOUNT_REQUEST', updateAmountSuccess),
+  takeLatest('@cart/UPDATE_AMOUNT_REQUEST', updateAmount),
 ]);
